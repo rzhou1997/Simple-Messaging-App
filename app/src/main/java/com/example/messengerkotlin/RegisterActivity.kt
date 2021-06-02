@@ -54,6 +54,10 @@ class RegisterActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.editTextPassword).requestFocus()
                 return@setOnClickListener
             }
+            if (photoSelectURiValue == null) {
+                Toast.makeText(this,"Please select a photo",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             // Firebase authentication for registration of user.
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener {
