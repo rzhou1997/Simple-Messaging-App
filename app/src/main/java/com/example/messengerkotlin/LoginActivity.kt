@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity(){
 
             //login with firebase
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener {
+                .addOnSuccessListener {
                         val intentToMessagesBoardActivity = Intent(this, MessagesBoardActivity::class.java)
                         intentToMessagesBoardActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intentToMessagesBoardActivity)
