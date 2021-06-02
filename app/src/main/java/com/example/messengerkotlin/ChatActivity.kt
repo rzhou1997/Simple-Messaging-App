@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -12,6 +13,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -19,18 +21,15 @@ import java.util.*
 
 class ChatActivity : AppCompatActivity() {
     val adapterMessages = GroupAdapter<GroupieViewHolder>()
-
+    var toOtherUser: User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
         //now let's use parcel to get into into our chat page so let's initialize this first.
-        val userData = intent.getParcelableExtra<User>(NewConversationActivity.NAMEKEYVALUE)
-
+        toOtherUser = intent.getParcelableExtra(NewConversationActivity.NAMEKEYVALUE)
 
         //now we can get the constant and put the support bar as the name of the user we picked
-        if (userData != null) {
-            supportActionBar?.title = userData.name
-        }
+        supportActionBar?.title=toOtherUser?.name
 
         findViewById<RecyclerView>(R.id.recycler_view_message_display).adapter = adapterMessages
         messageListener()
@@ -42,9 +41,7 @@ class ChatActivity : AppCompatActivity() {
     private fun messageListener(){
 
         val fromTextId = FirebaseAuth.getInstance().uid
-        val userData = intent.getParcelableExtra<User>(NewConversationActivity.NAMEKEYVALUE)
-        val toTextId = userData!!.uid
-
+        val toTextId = toOtherUser?.uid
         val referenceDatabase = FirebaseDatabase.getInstance().getReference("/Message-separate-users/$fromTextId/$toTextId")
         //this will let us be notified for all new messages that gets sent into our messages of users folder
         //list will be able to refresh itself
@@ -57,9 +54,10 @@ class ChatActivity : AppCompatActivity() {
                 if (messageInChat != null) {
 
                     if (messageInChat.fromTextId == FirebaseAuth.getInstance().uid) {
-                        adapterMessages.add(messageItemFrom(messageInChat.text))
+                        val loggedInUser = MessagesBoardActivity.loggedInUser?:return
+                        adapterMessages.add(messageItemFrom(messageInChat.text,loggedInUser))
                     } else {
-                        adapterMessages.add(messageItemTo(messageInChat.text))
+                        adapterMessages.add(messageItemTo(messageInChat.text,toOtherUser!!))
                     }
                 }
 
@@ -131,9 +129,13 @@ class ChatActivity : AppCompatActivity() {
 }
 
 //holds the view for our chat boxes of person who's sending the message
-class messageItemFrom (val textMessage:String): Item<GroupieViewHolder>(){
+class messageItemFrom (val textMessage:String, val userDisplays: User): Item<GroupieViewHolder>(){
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.textViewChatTo).text = textMessage
+        //loads user image into imageview
+        val userURI = userDisplays.profileImageUrl
+        val imageDisplays = viewHolder.itemView.findViewById<ImageView>(R.id.displayPhoto)
+        Picasso.get().load(userURI).into(imageDisplays)
     }
 
     override fun getLayout(): Int {
@@ -141,9 +143,13 @@ class messageItemFrom (val textMessage:String): Item<GroupieViewHolder>(){
     }
 }
 //holds the view for our chat boxes of person who's receiving the message
-class messageItemTo(val textMessage: String): Item<GroupieViewHolder>(){
+class messageItemTo(val textMessage: String, val userDisplays: User): Item<GroupieViewHolder>(){
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.textViewChatFrom).text = textMessage
+        //loads user image into imageview
+        val userURI = userDisplays.profileImageUrl
+        val imageDisplays = viewHolder.itemView.findViewById<ImageView>(R.id.displayPhoto)
+        Picasso.get().load(userURI).into(imageDisplays)
     }
 
     override fun getLayout(): Int {

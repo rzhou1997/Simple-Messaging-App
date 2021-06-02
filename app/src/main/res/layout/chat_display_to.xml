@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:paddingBottom="10dp">
 
-    <ImageView
-        android:id="@+id/imageView3"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/displayPhoto"
         android:layout_width="65dp"
         android:layout_height="57dp"
         android:layout_marginTop="16dp"
@@ -24,6 +24,8 @@
         android:layout_marginEnd="84dp"
         android:background="@drawable/round_edges"
         android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        android:maxWidth="240dp"
+        android:text="This is my message that will wrap into multiple lines and keep on going"
+        app:layout_constraintEnd_toEndOf="@+id/displayPhoto"
+        app:layout_constraintTop_toTopOf="@+id/displayPhoto" />
 </androidx.constraintlayout.widget.ConstraintLayout>

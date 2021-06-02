@@ -76,5 +76,28 @@
         app:layout_constraintStart_toStartOf="@+id/register"
         app:layout_constraintTop_toBottomOf="@+id/register" />
 
+    <Button
+        android:id="@+id/button_Select_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle_register_button"
+        android:text="Select Photo"
+        app:backgroundTint="#082B41"
+        app:layout_constraintBottom_toTopOf="@+id/editTextUserName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/selectPhotoImageView"
+        app:civ_border_width="4dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_Select_photo"
+        app:layout_constraintEnd_toEndOf="@+id/button_Select_photo"
+        app:layout_constraintStart_toStartOf="@+id/button_Select_photo"
+        app:layout_constraintTop_toTopOf="@+id/button_Select_photo" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

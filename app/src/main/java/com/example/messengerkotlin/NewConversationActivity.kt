@@ -1,9 +1,11 @@
 package com.example.messengerkotlin
 
 import android.content.Intent
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -96,6 +99,8 @@ class UserItem(val user:User): Item<GroupieViewHolder>(){
         //will be used to display all names of our users
         //grabs where the id of our user is in the textview and assigns it to the name of the user in our class User
         viewHolder.itemView.findViewById<TextView>(R.id.userName).text = user.name
+        //picasso will be used to hold image
+        Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.findViewById<ImageView>(R.id.displayPhoto))
     }
 
     //layout will render the rows of our users pages

@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -24,6 +26,7 @@ class MessagesBoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messages_board)
+
 
         /*let's first check if the user is logged in or not
        * if the user is logged in then they can view their
@@ -87,11 +90,13 @@ class MessagesBoardActivity : AppCompatActivity() {
             //fetching user id
             val referenceUser = FirebaseDatabase.getInstance().getReference("/users/$userChatID")
 
-            //setting name of the user with id
+            //setting name of the user with id and displays the photo with picasso
             referenceUser.addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(p0: DataSnapshot) {
-                   chatUserId = p0.getValue(User::class.java)
+                    chatUserId = p0.getValue(User::class.java)
                     viewHolder.itemView.findViewById<TextView>(R.id.username_display).text = chatUserId?.name
+                    val userPFP = viewHolder.itemView.findViewById<ImageView>(R.id.photoPFP)
+                    Picasso.get().load(chatUserId?.profileImageUrl).into(userPFP)
                 }
 
                 override fun onCancelled(p0: DatabaseError) {
@@ -182,4 +187,5 @@ class MessagesBoardActivity : AppCompatActivity() {
         })
 
     }
+
 }
