@@ -32,10 +32,6 @@ class LoginActivity : AppCompatActivity(){
                 findViewById<EditText>(R.id.editTextPassword).error = "Password cannot be empty"
                 findViewById<EditText>(R.id.editTextPassword).requestFocus()
                 return@setOnClickListener
-            } else if(password.length < 6){
-                findViewById<EditText>(R.id.editTextPassword).error = "Password length must be greater than 6"
-                findViewById<EditText>(R.id.editTextPassword).requestFocus()
-                return@setOnClickListener
             }
 
 
