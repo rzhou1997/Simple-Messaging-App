@@ -38,12 +38,14 @@ class LoginActivity : AppCompatActivity(){
             //login with firebase
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
                 .addOnSuccessListener {
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if(user?.isEmailVerified!!) {
                         val intentToMessagesBoardActivity = Intent(this, MessagesBoardActivity::class.java)
                         intentToMessagesBoardActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intentToMessagesBoardActivity)
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this,"${it.message}",Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this,"Email has not been verified yet.", Toast.LENGTH_LONG).show()
+                    }
                 }
         }
 
